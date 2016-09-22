@@ -7,12 +7,15 @@ function SlowPrinter(delay_ms, style_string) {
     document.body.appendChild(code);
 
     this.delay = delay_ms;
-    var callbacks = {};
     var idx = 0, idx_state = 0, timer_id = 0;
-    var is_in_comment = false;
-    var is_waiting_on_input = false;
     var tag_nodes = [code];
+    var is_in_comment = false;
+    var is_in_keyframes = false;
     var prev_class;     // specifically for comments inside selectors
+    var curly_stack = 0;
+
+    var is_waiting_on_input = false;
+    var callbacks = {};
     var func_name = '';     // for collecting the name of the callback
 
     function create_node() {
@@ -24,6 +27,10 @@ function SlowPrinter(delay_ms, style_string) {
 
     function print_next_char() {
         var char = style_string[idx];
+        if (char == undefined) {
+            return;
+        }
+
         var replace_last_node = '';
 
         // optional callback, so that we can initiate something from CSS by enclosing a name between '~'
@@ -34,6 +41,7 @@ function SlowPrinter(delay_ms, style_string) {
                 idx += 1;       // so that we don't loop on this indefinitely!
                 callbacks[func_name]();
                 is_waiting_on_input = false;
+                func_name = '';
             } else {
                 func_name += char;
             }
@@ -58,9 +66,18 @@ function SlowPrinter(delay_ms, style_string) {
                 // we should be able to restore it
                 prev_class = tag_nodes[tag_nodes.length - 1].className;
                 tag_nodes[tag_nodes.length - 1].className = 'comment';
+            } else if (char == '@') {
+                is_in_keyframes = true;
             } else if (char == '{') {
                 code.innerHTML += '{';
                 replace_last_node = 'key';
+
+                if (is_in_keyframes) {
+                    curly_stack += 1;
+                    if (curly_stack == 1) {
+                        replace_last_node = 'keyframes';
+                    }
+                }
             } else if (char == ':') {
                 code.innerHTML += ':';
                 replace_last_node = 'value';
@@ -70,6 +87,15 @@ function SlowPrinter(delay_ms, style_string) {
             } else if (char == '}') {
                 code.innerHTML += '}';
                 replace_last_node = 'selector';
+
+                if (is_in_keyframes) {
+                    curly_stack -= 1;
+                    if (curly_stack == 1) {
+                        replace_last_node = 'keyframes';
+                    } else if (curly_stack == 0) {
+                        is_in_keyframes = false;
+                    }
+                }
             }
         }
 
@@ -99,12 +125,12 @@ function SlowPrinter(delay_ms, style_string) {
 
     // TODO: display message overlay when paused or resumed...
     this.pause = function() {
-        this.is_running = false;
+        this.is_running = 0;
         clearInterval(timer_id);
     };
 
     this.resume = function() {
-        this.is_running = true;
+        this.is_running = 1;
         set_interval(this.delay);
     };
 
@@ -114,7 +140,7 @@ function SlowPrinter(delay_ms, style_string) {
 
     // Writes comments to the code area (very useful for writing custom messages along the way)
     // For example, we can `force_stop` printing (we should, whenever we're about to call this),
-    // then add a callback which continuously call this (until some event is fired, say 'click')
+    // then add a callback which continuously calls this (until some event is fired, say 'click')
     // and finally, `restore` the printer's state and resume printing the remaining stuff...
     this.print_message = function(message) {
         var i = 0;
@@ -141,13 +167,16 @@ function SlowPrinter(delay_ms, style_string) {
     // force stops the printer (but stores the state), so that we don't listen to
     // click inputs for pausing/resuming
     this.force_stop = function() {
+        this.is_running = 2;
         this.pause();
         idx_state = idx;
         idx = style_string.length;
     }
 
     this.restore = function() {     // restore the state and resume printing!
+        this.is_running = 1;
         idx = idx_state;
+        idx_state = style_string.length;
         this.resume();
     }
 
