@@ -129,7 +129,7 @@ function Injector(delay_ms, style_string) {
         clearInterval(timer_id);
     };
 
-    this.resume = function() {
+    this.play = function() {
         this.is_running = 1;
         set_interval(this.delay);
     };
@@ -177,7 +177,7 @@ function Injector(delay_ms, style_string) {
         this.is_running = 1;
         idx = idx_state;
         idx_state = style_string.length;
-        this.resume();
+        this.play();
     }
 
     if (style_string.length > 0) {
