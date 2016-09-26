@@ -2,18 +2,22 @@ const PRINT_TIMEOUT = 35;       // push a character every 35ms
 const TIMEOUT = 800;
 
 (function() {
-    var style_string = "\n\n\t/* There's no style string in the JS file! */";
-    var init_msg = "\t/* Hello! Click (or 'touch') or press 'space'... */";
-
     var start = new Date().getTime();
-    var spewer = new Injector(PRINT_TIMEOUT, init_msg);
-    spewer.play();
+    var style_string = "\n\n\t/* There's no style string in the JS file! */";
+
+    if (typeof tags != 'undefined') {
+        document.body.innerHTML += tags;
+    }
 
     if (typeof style != 'undefined') {
         style_string = style;
     }
 
-    var spewer = new Injector(PRINT_TIMEOUT, style_string);
+    var init_msg = "\t/* Hi there! Click (or 'touch') or press 'space'... */";
+    var spewer = new Injector(PRINT_TIMEOUT, init_msg);
+    spewer.play();
+
+    spewer = new Injector(PRINT_TIMEOUT, style_string);
 
     spewer.add_callback('end', function() {
         var current = new Date().getTime();

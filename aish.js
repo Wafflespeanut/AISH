@@ -18,8 +18,8 @@ function Injector(delay_ms, style_string) {
         return node;
     }
 
-    var node = get_or_create_node('style-tag', 'style');
-    var code = get_or_create_node('style-text', 'pre');
+    var node = get_or_create_node('tag', 'style');
+    var code = get_or_create_node('code', 'pre');
     var tag_nodes = [code];
 
     function create_node() {
@@ -31,6 +31,7 @@ function Injector(delay_ms, style_string) {
 
     function print_next_char() {
         var char = style_string[idx];
+        console.log(char);
         if (char == undefined) {
             return;
         }
