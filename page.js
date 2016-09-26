@@ -3,7 +3,7 @@ const TIMEOUT = 800;
 
 (function() {
     var start = new Date().getTime();
-    var style_string = "\n\n\t/* There's no style string in the JS file! */";
+    var style_string = "\n\n\t/* There's no 'style_string' in the JS file! */";
 
     if (typeof tags != 'undefined') {
         document.body.innerHTML += tags;
@@ -13,7 +13,7 @@ const TIMEOUT = 800;
         style_string = style;
     }
 
-    var init_msg = "\t/* Hi there! Click (or 'touch') or press 'space'... */";
+    var init_msg = "\t/* Click (or 'touch') or press 'space'... */";
     var spewer = new Injector(PRINT_TIMEOUT, init_msg);
     spewer.play();
 

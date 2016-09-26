@@ -1,0 +1,131 @@
+/*
+ * Before we get into this thing, let's setup my chat space!
+ *
+ * I'll explain in a bit, just gimme a moment...
+ * (also, it'd be nice if you're in full screen!)
+ *
+ */
+
+* { transition: all 800ms; }
+
+
+/* We need something pleasant! */
+
+body {
+  background-color: black;
+  color: white;
+  font-size: 0.9vw;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+
+/* Chat space! (and coding area) */
+
+#code {
+  position: fixed;
+  background-color: #002B36;
+  width: 40%;
+  top: 1vh; bottom: 1vh; left: 25%;
+  overflow-x: hidden;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 1vw;
+  padding: 2% 1%;
+  box-sizing: border-box;
+  z-index: 999;
+}
+
+
+/*
+ * Oh, and just click anywhere on the screen
+ * (or press 'space' in your keyboard)
+ * to *shush* me!
+ *
+ * I know you won't do that, but if you do, just
+ * do it again to keep me talking! :)
+ *
+ */
+
+#code .comment { font-style: italic; }
+
+/*
+ * Hi there!
+ *
+ *
+ * Um...
+ *
+ *
+ * I'm a script!
+ *
+ * ... pushing the limits of your browser's engine.
+ *
+ *
+ * So, basically I'm injecting <whatever you're seeing here>
+ * into a <style> and a <pre> element.
+
+ * Since the browser repaints the window whenever the
+ * <style> element is modified, we get this nice picture!
+ *
+ */
+
+
+/*
+ * Don't believe me?
+ *
+ * Watch this!
+ *
+ */
+
+.comment       { color: #707E84; }
+.selector      { color: #DC322F; }
+.key           { color: #2AA198; }
+.value         { color: #B58900; }
+.keyframes     { color: #859900; }
+
+/*
+ * ... which also means that I didn't lie altogether!
+ *
+ * Now, now... Enough chat!
+ *
+ * It's time to have some fun!
+ *
+ */
+
+
+/* Let's move this thing first! */
+
+#code { left: 1%; }
+
+
+/* This is where it all begins! */
+
+#pop {
+  position: absolute;
+  background-color: white;
+  top: 50%; left: 70%;
+  width: 1vw; height: 1vw;
+  border-radius: 50%;
+  z-index: 100;
+
+  /* BOOM! */
+  transform: scale(200);
+}
+
+/* Let's isolate our coding area */
+
+#block {
+  opacity: 0;
+  z-index: 500;
+  width: 42%; height: 100%;
+  position: absolute;
+  top: 0; left: 0;
+  background-color: black;
+  opacity: 1;
+}
+
+
+/* ... and fade! */
+
+#pop { opacity: 0.08; }
+
+~end~
