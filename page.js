@@ -1,4 +1,5 @@
 const PRINT_TIMEOUT = 35;       // push a character every 35ms
+const BLOCK_WIDTH = 0.4;
 const TIMEOUT = 800;
 
 (function() {
@@ -18,6 +19,14 @@ const TIMEOUT = 800;
     spewer.play();
 
     spewer = new Injector(PRINT_TIMEOUT, style_string);
+
+    spewer.add_callback('bubbles', function() {
+        setTimeout(function() {
+            setInterval(function() {
+                start_bubbling(BLOCK_WIDTH, 0, 1, 1);
+            }, 1500);
+        }, 1200);
+    });
 
     spewer.add_callback('end', function() {
         var current = new Date().getTime();
