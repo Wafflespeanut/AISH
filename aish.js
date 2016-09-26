@@ -31,7 +31,6 @@ function Injector(delay_ms, style_string) {
 
     function print_next_char() {
         var char = style_string[idx];
-        console.log(char);
         if (char == undefined) {
             return;
         }
@@ -49,8 +48,11 @@ function Injector(delay_ms, style_string) {
             }
 
             var func_name = style_string.slice(idx + 1, idx + i + 1);
-            idx += i + 2;
-            callbacks[func_name]();
+            if (callbacks.hasOwnProperty(func_name)) {
+                idx += i + 2;
+                callbacks[func_name]();
+            }
+
             return;
         }
 
